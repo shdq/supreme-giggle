@@ -33,7 +33,7 @@ func handleFib(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "text/plain")
 
-	fmt.Fprintf(w, "The Fibonacci number at position %d is %d", n, fib(n))
+	fmt.Fprintf(w, "The Fibonacci number at position %d is %d\n", n, fib(n))
 }
 
 func main() {
