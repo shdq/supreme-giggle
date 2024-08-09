@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 func fib(n int) int {
@@ -13,7 +14,19 @@ func fib(n int) int {
 }
 
 func handleFib(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Your fibonacci number is", fib(6))
+	q := r.URL.Query()
+	s := q.Get("n")
+	if s == "" {
+		http.Error(w, "Query parameter 'n' is required", http.StatusBadRequest)
+		return
+	}
+	n, err := strconv.Atoi(s)
+	if err != nil {
+		http.Error(w, "Query parameter 'n' has to be integer", http.StatusBadRequest)
+		return
+	}
+
+	fmt.Fprintf(w, "The Fibonacci number at position %d is %d", n, fib(n))
 }
 
 func main() {
