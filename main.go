@@ -22,7 +22,12 @@ func handleFib(w http.ResponseWriter, r *http.Request) {
 	}
 	n, err := strconv.Atoi(s)
 	if err != nil {
-		http.Error(w, "Query parameter 'n' has to be integer", http.StatusBadRequest)
+		http.Error(w, "Query parameter 'n' has to be a positive integer", http.StatusBadRequest)
+		return
+	}
+
+	if n < 1 {
+		http.Error(w, "Query parameter 'n' has to be a positive integer", http.StatusBadRequest)
 		return
 	}
 
