@@ -1,0 +1,18 @@
+# Build stage
+FROM golang:1.23-alpine AS build
+
+WORKDIR /build
+COPY . /build
+
+RUN go test ./...
+RUN CGO_ENABLED=0 GOOS=linux go build -o app
+
+# Serve stage
+FROM golang:1.23-alpine
+
+WORKDIR /srv
+COPY --from=build /build/app /srv/app
+
+EXPOSE 8090
+
+CMD [ "/srv/app" ]
